@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Rota do Café — POA</title>
+<meta name="theme-color" content="#FBEFE4">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Rota do Café">
+<meta name="description" content="Checklist das 64 melhores cafeterias de Porto Alegre.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FBEFE4; --paper2:#FFF8F2; --ink:#241813; --ink60:#6B564C;
+  --red:#D93B22; --green:#2E6B5E; --gold:#E8A33D; --line:#241813;
+  --sh:3px 3px 0 var(--ink);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"DM Sans","Segoe UI",system-ui,-apple-system,Helvetica,Arial,sans-serif;
+  padding-bottom:env(safe-area-inset-bottom);
+  overscroll-behavior-y:none;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background-image:radial-gradient(var(--ink) .5px,transparent .5px);
+  background-size:22px 22px;
+}
+.wrap{position:relative;z-index:1;max-width:560px;margin:0 auto;padding:0 18px 40px}
+h1,h2,h3,.disp{font-family:"Bricolage Grotesque","Segoe UI",system-ui,-apple-system,Helvetica,Arial,sans-serif;font-weight:800;letter-spacing:-.02em;margin:0}
+
+/* ---------- topo ---------- */
+.top{padding:26px 0 14px}
+.brandrow{display:flex;align-items:center;gap:12px}
+.cup{width:42px;height:42px;flex:none}
+.brand{font-size:26px;line-height:1}
+.brand small{display:block;font-family:inherit;font-weight:500;font-size:11.5px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--ink60);margin-top:5px}
+
+.meter{margin-top:18px;border:2px solid var(--line);border-radius:16px;background:var(--paper2);
+  box-shadow:var(--sh);padding:14px 16px}
+.meter .row{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.pct{font-family:"Bricolage Grotesque","Segoe UI",system-ui,Helvetica,sans-serif;font-weight:800;font-size:34px;line-height:.9}
+.pctlab{font-size:12.5px;color:var(--ink60);font-weight:500}
+.bar{margin-top:11px;height:13px;border:2px solid var(--line);border-radius:99px;background:#fff;
+  overflow:hidden;position:relative}
+.bar i{display:block;height:100%;width:0;border-radius:99px;
+  background:repeating-linear-gradient(45deg,var(--red) 0 7px,#C3311B 7px 14px);
+  transition:width .7s cubic-bezier(.2,.9,.25,1)}
+.beans{margin-top:9px;font-size:12px;color:var(--ink60);display:flex;justify-content:space-between}
+
+/* ---------- busca / abas ---------- */
+.search{margin:16px 0 4px;position:relative}
+.search input{width:100%;font:inherit;font-size:15px;padding:12px 14px 12px 40px;border:2px solid var(--line);
+  border-radius:13px;background:var(--paper2);color:var(--ink);outline:none}
+.search input::placeholder{color:#A08C82}
+.search svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);opacity:.5}
+.tabs{display:flex;gap:8px;margin:12px 0 6px;flex-wrap:wrap}
+.tab{font:inherit;font-size:12.5px;font-weight:700;padding:7px 13px;border:2px solid var(--line);
+  border-radius:99px;background:transparent;color:var(--ink);cursor:pointer}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+
+/* ---------- lista de bairros ---------- */
+.sechead{display:flex;align-items:center;gap:10px;margin:26px 0 12px}
+.sechead h2{font-size:14px;letter-spacing:.14em;text-transform:uppercase}
+.sechead .ln{flex:1;height:2px;background:var(--ink);opacity:.16}
+
+.hood{width:100%;display:flex;align-items:center;gap:13px;text-align:left;cursor:pointer;
+  background:var(--paper2);border:2px solid var(--line);border-radius:15px;padding:13px 14px;margin-bottom:10px;
+  box-shadow:var(--sh);transition:transform .12s,box-shadow .12s;font:inherit;color:inherit}
+.hood:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+.hood .ic{width:38px;height:38px;flex:none;border:2px solid var(--line);border-radius:11px;
+  display:grid;place-items:center;background:var(--paper);font-size:18px}
+.hood .nm{flex:1;min-width:0}
+.hood .nm b{font-family:"Bricolage Grotesque","Segoe UI",system-ui,Helvetica,sans-serif;font-weight:700;font-size:16px;display:block;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hood .nm span{font-size:12px;color:var(--ink60)}
+.dots{display:flex;gap:3px;flex-wrap:wrap;max-width:76px;justify-content:flex-end}
+.dots i{width:6px;height:6px;border-radius:99px;border:1.5px solid var(--ink);background:transparent}
+.dots i.on{background:var(--green);border-color:var(--green)}
+.hood.done{background:#EAF3EF;border-color:var(--green)}
+.hood.done .ic{border-color:var(--green)}
+
+/* ---------- cards ---------- */
+.card{position:relative;border:2px solid var(--line);border-radius:17px;background:var(--paper2);
+  box-shadow:var(--sh);overflow:hidden;margin-bottom:14px}
+.card .ph{position:relative;height:158px;background:#E7D9CE;overflow:hidden}
+.card .ph img{width:100%;height:100%;object-fit:cover;display:block;transition:filter .35s,transform .35s}
+.card .ph .fallback{position:absolute;inset:0;display:grid;place-items:center;font-size:52px;
+  background:linear-gradient(135deg,#E9D8C8,#D6BCA6);
+  box-shadow:inset 0 0 0 1px rgba(36,24,19,.07)}
+.badge{position:absolute;top:10px;left:10px;background:var(--paper2);border:2px solid var(--line);
+  border-radius:99px;padding:3px 10px;font-size:11.5px;font-weight:700;display:flex;gap:4px;align-items:center}
+.card .bd{padding:13px 14px 14px}
+.card h3{font-size:17.5px;line-height:1.2}
+.card .sub{font-size:12.5px;color:var(--ink60);margin:5px 0 0}
+.card .tip{font-size:13px;margin:9px 0 0;padding-left:11px;border-left:3px solid var(--gold);line-height:1.45}
+.acts{display:flex;gap:9px;margin-top:13px}
+.btn{flex:1;font:inherit;font-weight:700;font-size:13.5px;padding:11px 10px;border:2px solid var(--line);
+  border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;
+  background:var(--paper);color:var(--ink);text-decoration:none;transition:transform .1s}
+.btn:active{transform:translateY(2px)}
+.btn.main{background:var(--red);color:#fff;border-color:var(--line)}
+.card.done{border-color:var(--green);background:#EFF6F3}
+.card.done .ph img{filter:grayscale(.55) contrast(.92)}
+.card.done .btn.main{background:var(--green)}
+
+/* carimbo */
+.stamp{position:absolute;top:50%;left:50%;width:132px;height:132px;pointer-events:none;
+  transform:translate(-50%,-50%) rotate(-16deg) scale(.3);opacity:0;transition:none;z-index:3}
+.card.done .stamp{opacity:1;transform:translate(-50%,-50%) rotate(-16deg) scale(1)}
+.card.pop .stamp{animation:stampIn .55s cubic-bezier(.2,1.5,.4,1) both}
+@keyframes stampIn{0%{opacity:0;transform:translate(-50%,-50%) rotate(-42deg) scale(2.1)}
+  60%{opacity:1;transform:translate(-50%,-50%) rotate(-10deg) scale(.88)}
+  100%{opacity:1;transform:translate(-50%,-50%) rotate(-16deg) scale(1)}}
+.card.pop{animation:shake .5s}
+@keyframes shake{0%,100%{transform:translateX(0)}22%{transform:translateX(-6px)}44%{transform:translateX(5px)}70%{transform:translateX(-2px)}}
+
+/* ---------- nav / voltar ---------- */
+.back{display:inline-flex;align-items:center;gap:7px;font-weight:700;font-size:13.5px;background:none;
+  border:none;color:var(--ink);cursor:pointer;padding:16px 0 6px;font-family:inherit}
+.hoodhead{margin:2px 0 16px}
+.hoodhead h2{font-size:27px;line-height:1.05}
+.hoodhead p{margin:7px 0 0;font-size:13px;color:var(--ink60)}
+
+.empty{text-align:center;padding:48px 16px;color:var(--ink60);font-size:14px}
+.empty div{font-size:40px;margin-bottom:10px}
+
+/* rodapé */
+.foot{margin-top:34px;padding-top:18px;border-top:2px dashed rgba(36,24,19,.25);
+  display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
+.foot button{font:inherit;font-size:12px;font-weight:700;background:none;border:2px solid rgba(36,24,19,.3);
+  border-radius:99px;padding:7px 14px;color:var(--ink60);cursor:pointer}
+.mini{position:fixed;top:0;left:0;right:0;z-index:40;background:var(--paper2);
+  border-bottom:2px solid var(--ink);padding:9px 16px calc(9px + env(safe-area-inset-top));
+  display:flex;align-items:center;gap:11px;transform:translateY(-105%);transition:transform .3s}
+.mini.on{transform:none}
+.mini .mb{flex:1;height:9px;border:2px solid var(--ink);border-radius:99px;background:#fff;overflow:hidden}
+.mini .mb i{display:block;height:100%;background:var(--red);border-radius:99px;transition:width .5s}
+.mini b{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;font-size:13.5px}
+.aviso{border:2px dashed rgba(36,24,19,.4);border-radius:14px;padding:13px 15px;margin:14px 0;
+  font-size:13.2px;line-height:1.5;color:var(--ink60);background:rgba(255,255,255,.45)}
+.aviso b{color:var(--ink)}
+.aviso button{font:inherit;font-weight:700;font-size:13px;margin-top:9px;padding:9px 15px;border:2px solid var(--ink);
+  border-radius:11px;background:var(--red);color:#fff;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,120%);background:var(--ink);color:var(--paper);
+  padding:12px 20px;border-radius:99px;font-size:13.5px;font-weight:600;z-index:99;transition:transform .35s cubic-bezier(.2,1.2,.3,1);
+  max-width:88vw;text-align:center}
+.toast.on{transform:translate(-50%,0)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brandrow">
+      <svg class="cup" viewBox="0 0 48 48" fill="none" stroke="#241813" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18h24v11a10 10 0 0 1-10 10h-4A10 10 0 0 1 9 29V18Z" fill="#FFF8F2"/>
+        <path d="M33 21h4a5 5 0 0 1 0 10h-4"/>
+        <path d="M16 11c0-2 2-2 2-4M23 11c0-2 2-2 2-4M30 11c0-2 2-2 2-4" stroke="#D93B22"/>
+        <path d="M7 43h30" />
+      </svg>
+      <h1 class="brand">Rota do Café<small>Porto Alegre · 64 paradas · v3</small></h1>
+    </div>
+
+    <div class="meter">
+      <div class="row">
+        <div><div class="pct" id="pct">0%</div><div class="pctlab">da rota concluída</div></div>
+        <div style="text-align:right"><div class="pct" id="cnt" style="font-size:22px">0/64</div>
+        <div class="pctlab">cafeterias</div></div>
+      </div>
+      <div class="bar"><i id="bar"></i></div>
+      <div class="beans"><span id="msg">Bora começar? ☕</span><span id="hoodsdone"></span></div>
+    </div>
+  </header>
+
+  <main id="view"></main>
+
+  <div class="foot">
+    <button id="btnLuck">☕ Sortear próxima</button>
+    <button id="btnExp">Copiar meu progresso</button>
+    <button id="btnImp">Colar progresso</button>
+    <button id="btnReset">Zerar</button>
+  </div>
+</div>
+<div class="mini" id="mini"><b id="miniN">0/64</b><span class="mb"><i id="miniB"></i></span></div>
+<div class="toast" id="toast"></div>
+
+<script>
+// Base de dados — 64 cafeterias de Porto Alegre
+// p = token da foto do Google (reconstruido em IMG_BASE + p + IMG_SUF)
+const IMG_BASE = "https://lh3.googleusercontent.com/place-photos/";
+const IMG_SUF  = "=s4800-w800-h600";
+
+const CAFES = [
+{n:"Agridoce Café",b:"Cidade Baixa",r:4.8,e:"R. Sarmento Leite, 1024",lat:-30.0377766,lng:-51.2239412,id:"ChIJ76X9sgF5GZURPGa-hzYb9hA",d:"Décor colorida, ótimo pra foto",p:"AG9NLjBRC7vqcU9WRR7dCRyKI4F8QLPkNwW4w0FjQ3KRWmvcVRuVfFFbxUHhNVCwVb_250wR0uxxdUKXmvUt6JMJJ40swiUqHxwGsSEoBhbKg9PukgDH_d77wOOF4QbC-A_rc_uSuNMig4UMiGKzn_U"},
+{n:"Café Porto Farrô",b:"Farroupilha",r:4.7,e:"Av. Venâncio Aires, 1031",lat:-30.0379051,lng:-51.2104593,id:"ChIJcdc7YVR5GZURyZ5trqVQ1xE",d:"Pão de fermentação natural, refil de passadinho",p:"AG9NLjAJAzGMdNL0H3gNhjz-_RStpF7Yvyqut5X1Q3ZfVKrLL-7bXbcA0BVd7sZooZjvexqMXs9Ky3X_B6LYtIxf_yWtM9Wdgm3WF3KUjMao1yylStUB5PnDqImJzpM26jd4VLDKSwF_L-r6HrGX4w"},
+{n:"Café à Brasileira",b:"Centro Histórico",r:4.7,e:"R. Uruguai, 310",lat:-30.0293339,lng:-51.2285758,id:"ChIJKTF6Dw95GZURuexo5FcKqus",d:"Clássico do centro, abre 7h",p:"AG9NLjClkg8pfS0Gl-ubZOAu_RBaCyuSKE9C4TNdoI30QVp-Bqilr8TdMZczJ_Sw4ucvec5dziJYMIZvMLsLGKB3f0uS81k1me7kb5vEYM_DYKVylx225uNI1ZoC0wSnU6IvhqPxu5gLeHkGgmKxhQ"},
+{n:"República Coffee",b:"Cidade Baixa",r:4.6,e:"R. da República, 358",lat:-30.0385201,lng:-51.2231726,id:"ChIJSSv50wF5GZURsXH7W1QE57M",d:"Rooftop e coado feito na mesa",p:"AG9NLjBAa424r1jYYYVUohx_32JvKBl7954x64aRbLZaLkZBQF9gxfiR2FNRsNSR8tNrDn-Y64Kb-y8Fn3AwqOhgXTEbNypMjNeyNeHUlzfxcr__qJ0SeH1qzgiPqbPAkRRsMRpfJ-ium6WowJykjaU"},
+{n:"Leiteria 639",b:"Cidade Baixa",r:4.5,e:"Av. Venâncio Aires, 946",lat:-30.0381261,lng:-51.2115076,id:"ChIJU-HIyFN4GZURuLhMQ7oYyRk",d:"Brunch de domingo estilo buffet",p:"AG9NLjBVODc6HMMErOu2yGF3LtVZLPm7wM06w_IvKuHXKsdmwog73K2oH9v9PUn3w3Ukzl5fRCaUGUMDxBnoFdlYrHK-rYSrgxcujadETAKH6BT93AgyzX6hgBZ78sxW4vyXEtw_3yjo9HbGQ7Oy5A"},
+{n:"Piccolino Café",b:"Moinhos de Vento",r:4.7,e:"R. Félix da Cunha, 1155",lat:-30.023165,lng:-51.202061,id:"ChIJ67wLlrd5GZURNcdWAX45pvc",d:"Mesinhas na calçada, vinho à noite",p:"AG9NLjB_HdeXOPFk8FjGNxq5OYwJXN1GIgIKDVX4mo97Ay_HbGVXo9MXNqWO7PzBmN8G9gucm5YtPUddPpYN_uoXUFi3USjzu0BaXZ0HftIqqV2CZM6nSUsGmccPqadPoinwXPSFSd8iaSSQjWDC9CI"},
+{n:"Startt & Brothers",b:"Auxiliadora",r:4.6,e:"R. Eudoro Berlink, 520",lat:-30.0242863,lng:-51.1924936,id:"ChIJcWLv_EN5GZURlnp_AboQT9o",d:"Bagel e torta de maçã",p:"AG9NLjBH1wbx2UqHOudOb9r-JgWE5mKo406ntQ5vg6Ejg_F9JuPo3AubANY9O67j0n2KPR9FSFBcDXUIR-5MZLbnCRhKfCIKiTZQFLw8Ng4ZFXFgydrEeqYNzW7b8mJVpRLO3_GJRrHCaTo5VPfOp1M"},
+{n:"Sensorial Café",b:"Moinhos de Vento",r:4.9,e:"R. 24 de Outubro, 395",lat:-30.0272259,lng:-51.2037747,id:"ChIJdctbEFl3GZURaWYj50JtZns",d:"Cheese roll de queijo com manjericão",p:"AG9NLjBSwG9w82LXdmLyQzbCKX45I_jET-_MPpSRAyclBoFZhdzpeNeWoZg2mNAsgdNK_FlZ85gWBVyR2xdrhNXV9TbqGImMinqyskZF-BeU9FGfM0_LjvFbTdOFWYU-VOY831KX4b3uS-x1-MM6lWZthpJR6Q"},
+{n:"Ginkgo",b:"Auxiliadora",r:4.4,e:"R. Cel. Bordini, 332",lat:-30.0209428,lng:-51.1969999,id:"ChIJn4OT9qx5GZURKyjUysBayLI",d:"Também floricultura, pátio cheio de plantas",p:"AG9NLjA8Rf-A8J6_2cqJxgVq2edOhzaYmLH4D_ChnfMtsvqdg1jIRXBzGgcFvmGVtx9m9anpLV81p1S21tv266knbSNtVO1Aup4T9YQGtEfVxJW1pPJpyxdyNnyn0mH_qEBJVzqIMSko_J9WR5MsRDjNx8L3ww"},
+{n:"Sabor de Luna",b:"Mont'Serrat",r:4.7,e:"R. Dr. Freire Alemão, 310",lat:-30.0247292,lng:-51.1918233,id:"ChIJpdjvuc15GZUR7yr5CGBHL_s",d:"Padaria uruguaia, medialunas e facturas",p:"AG9NLjCO8lxMc83Lv9Ore4jR2x-2dBCPlKTWOtwKkyVFmjbKMeFJqXia4_O_i2KZTa-TP22imtTgkRkpMDDmWJhbksfq8k_HvqYcyY2EyfGzYWrZ3VqV-aqP66pwfGUwY3Od_7RqPiVuRQfWTi8ix_w"},
+{n:"Yami Café",b:"Mont'Serrat",r:4.5,e:"R. Ten. Cel. Fabricio Pillar, 198",lat:-30.0259032,lng:-51.1954156,id:"ChIJ_b6DREx4GZURYNzVl9n9-Ak",d:"Terceira onda, torra própria, sem glúten",p:"AG9NLjBlQFjknwzZk5RDcFa1it26QyESfVSpKr7a20LEmxH0Zf9Ysv5BNVsrlQs4UonwUHlIs6hbyxAmHUXLTzH_CJemP6cI7ep3lHHcO_fPh-lPcjXgYULR9du_Bzf2V8-VcFMjV46Z5OqzvIPZ"},
+{n:"Abuela Café & Torrefação",b:"Floresta",r:4.9,e:"R. Câncio Gomes, 664",lat:-30.0186954,lng:-51.2066142,id:"ChIJkwiMulh5GZURr7ZIwgAlcq8",d:"Torrefação própria e cookies caseiros",p:"AG9NLjCYDicdDs1CN9BbT_pd30cPbVfgbB2zSjFD9sPJxQgc064FkTvbsRNu-hwliB8huyeOqYt64AWk-ruyuawPJ8uU4GXuftkHK0K0q4BWjPThXsDJT2JTBOKJhII9rpxMA-7w03TVHf2Vu9IPF08"},
+{n:"Caffeine Coffee Co.",b:"Rio Branco",r:4.7,e:"R. Vicente da Fontoura, 2805",lat:-30.0375102,lng:-51.1955426,id:"ChIJAxWsEvx5GZURx3YPe_qaMno",d:"Pet friendly, ótimo pra leitura",p:"AG9NLjANO5e9Ou9-a3GrmhmJkV7UJLhJO5eNKgGH35xVomsC4Ffg7TPIfg42UCpQA35vaXb0SHHc9KH7qADfuxNzr0J4O-NhDEvST4VsUJGiVD3pGRKtZOe3HozDCdhvT0MDsmXh4z2H1IDE52kAuA"},
+{n:"Vitiaceri Casa das Cucas",b:"São João",r:4.8,e:"Av. dos Estados, 111",lat:-29.9954898,lng:-51.1874613,id:"ChIJ1bTwaNV5GZURxPdg2DJHpWQ",d:"Cucas fresquinhas todo dia",p:"AG9NLjDE_Op021VdFzNm5wmeKhWtnVTFVKclOUp4-dKpIPGj_2-rWFzohiZvjTioMQGPPIwUKhVorDnJ2xwQdHQubcq9Tbs3alT0Oth-25vcMXM0FoA9FASOIOD0Gz1H0UqrWK6WQ_0uy0gLnhIX"},
+{n:"Consuela's",b:"Santana",r:4.3,e:"R. Monsenhor Veras, 630",lat:-30.048579,lng:-51.1994603,id:"ChIJbZXvagB5GZURSEqGWgznMP8",d:"Marmitinha de brownie",p:"AG9NLjD3xkWsxZi73mr0e8LtqNDgHFhTMZInfv5OupztHNDX2YP7qaq1LQVi0zmW1lpTl0s_qfODAunr2ZTg2c_5FZ8ND9JsE--ClgC8xoaV_ygM-ESylM28n-ziZXiR6j3z8EwsCEOEafT2LBCxfl0Rs7LDdQ"},
+{n:"Bella Café e Bistrô",b:"Ipanema",r:4.4,e:"Av. Cel. Marcos, 2353",lat:-30.1318276,lng:-51.2355449,id:"ChIJl15OgwGDGZURAwhhHyb8nhk",d:"Vista boa e pet friendly",p:"AG9NLjB2V5azmM_oV0GtsOG1ezokrLL2EemeP18bjg_Fwq6ZM5IhY8FQBzrl42UxxDYIiOpdfNq4v3orwzOY-LmFQW2FOi9B9gILaxc-i-ivzuxRuNPXMHwwT2cwBwcl_Q7UA_pJ14rhJ_1klm-ulQc"},
+{n:"Café Musa Velutina",b:"Independência",r:4.5,e:"R. Santo Antônio, 372",lat:-30.0283651,lng:-51.2140201,id:"ChIJJSSpBq95GZURX7V2O1qODco",d:"Cuca enrolada e matelatte",p:"AG9NLjBJg2Lo01E5QkcDzoKZ4jEcuq6ghF1Uu-M2kxjW6G4NZXxbN3SE-fkVQbGaZWmAUsaoVP9-aVne9Z9pzWpTZ86g9vx7-qqaNMV-IBpXQkWv5aKHLaTnPgvieCkiwi0_Zfarvrm6NGJbrd2DRMfu80VcUA"},
+{n:"Go Coffee",b:"Moinhos de Vento",r:4.6,e:"R. 24 de Outubro, 881",lat:-30.0239997,lng:-51.1998499,id:"ChIJYYC4l9d5GZURTFFp91zq6vY",d:"Frappés e croissant quentinho",p:"AG9NLjDeztYtYukTXcNsvQJAk4rF2bLAPL3xot8NEU1FGSrR9wRQcSwTSD6yAJOxYwNNiYPHaRVbOjVrddRbKbn0_KJROCz67oj_72AZrNhfzMiqCWDkJyQt_2noCGChfEOVJHNL5wUlUuLQaYs"},
+{n:"Rocambolo Atelier de Doces",b:"Petrópolis",r:4.9,e:"R. Felipe de Oliveira, 326",lat:-30.0427406,lng:-51.1984757,id:"ChIJ842W-PV5GZURA4kNv-Sd23U",d:"Torta Sellye e brigadeiros",p:"AG9NLjCw9by4-hPwQdy9uTGXRnyo_2Qe-rFEl2hw91cOzWTNB4qiE77xM68ZC3d8rEVwVF95SZDAtJg0Orxtv8HEYz3eqrKKLRROrTE96m0SegXW_OOOxSb22fRInY_tlB4jfyI2T3qvP0lq4G70V2s"},
+{n:"Mercado Brasco",b:"Moinhos de Vento",r:4.2,e:"R. Padre Chagas, 300",lat:-30.0246251,lng:-51.2030973,id:"ChIJEULLxwh5GZURjlvZat5cZAc",d:"Café da manhã na Padre Chagas",p:"AG9NLjD96h9S5aH6AP-9h80HqJaz1qTg9ttdj9v0i6YhyATQzpqBOk7NdUk9dah9VpBnIY5fxaWpUF4C1FeILXUuHsfiuTrzK9ENQRsfuIVLErNDMfIpOqEwYlO2_rkAbPmqqBGgiWQFC_Mg9WTO6sU"},
+{n:"Charlie Brownie",b:"Mont'Serrat",r:4.6,e:"R. Ten. Cel. Fabricio Pillar, 822",lat:-30.0252468,lng:-51.1891114,id:"ChIJG_vkWcx5GZURBQKd3uPPh_M",d:"Brownie com nutella e morango",p:"AG9NLjBOTptSc7qv9T2FDxwsbJW5Nb7M0ZpvE2zeUbGnXN6diWqtAi_qRCa_lLRmMfowwXv2yyYTWfbQBDEbwSqnhilbS06O1_0ziN95R0TNj4kp0-iHYYLSRvKE5l1jGyAnEJI8xKAHR0lUVXSCKFk"},
+{n:"Maitê Caino Doceria",b:"Rio Branco",r:4.8,e:"R. Giordano Bruno, 100",lat:-30.0343836,lng:-51.2065116,id:"ChIJFSRe06x5GZURYSYqCXk-MmM",d:"Torta de morango com branquinho",p:"AG9NLjAryEU3iCq20J2LN9cAyPMQZ4u-fMf13VjPWla812knQ-4_S6mX7BsuTeN0NIFApaS-63kIhHqYjPzQ8kSrRbIxR3J4AwurCp_GeRb9bWDYGCh4eTt4b8XGQsG1ZGwqrOLx6knnYKFXU7hs_Jv6Ozmazg"},
+{n:"Moa Cafeteria",b:"Centro Histórico",r:4.6,e:"R. Duque de Caxias, 687",lat:-30.0340183,lng:-51.2346436,id:"ChIJ9ejofdF5GZURg4kx9R5PsMQ",d:"Terraço verde nos fundos",p:"AG9NLjDc7DM-dCLfGi5U57quE5p0tDhrvixm_kyf65EBaptgN2WNNK5QU2jqoXxOVWqRaiz0Is36x9rr4Crfv48C3oOaNqlpaxU2l2cRIr0el2Kf6gkpRwYyjoOp_wTV8kZMqQ3n2lretmV_DT_ioNuadHBFow"},
+{n:"Flor de Lis",b:"Bom Fim",r:5.0,e:"R. Gen. João Telles, 531",lat:-30.0342542,lng:-51.2129528,id:"ChIJDYx6wKt5GZURQx00v7RCmLw",d:"Quiches e cafés gelados diferentes",p:"AG9NLjCwrDmcQVO921DF2X-fpFkuktaqLzW5mr4E6DuhT7hoGjxlIyl1oxzg-Zqi7Qm9ghoCFcTAYMrb9okcwpbEzGi6VR0dC9ibLQtHT5m8t3USRMS3La6bzEERnLWpxRIMYpCWG82ZANr0odAHwKyLH47o"},
+{n:"MaSweets",b:"Bela Vista",r:5.0,e:"R. Furriel Luíz A. de Vargas, 122",lat:-30.0279407,lng:-51.1840375,id:"ChIJ3V-h1V55GZURoQjthMOiscg",d:"Torta de caramelo e pão de mel",p:"AG9NLjDAf1IAjkVngNbrwp6MiAEcLFxTKMmmAMj6zBvXPLgQQAHIpo8YANMDC51TUXEt1G4uS6jKovYwBEqIuMv3bgqaQ4A-70bzkAjalSt8042R-QDMLUxG1gUz5m0Dvmh-lSvDgCUaP96rcYdi4wAwK67J"},
+{n:"D'Juca Confeitaria",b:"Cidade Baixa",r:4.9,e:"Av. Venâncio Aires, 148",lat:-30.0422119,lng:-51.2186005,id:"ChIJacAX-3R5GZURRul8I3sve14",d:"Torta chocoberry e cappuccino de nutella",p:"AG9NLjAq3mkfytXOlRcoPzWGxJ3dUv0kZAde4ncoWeBr9uKNwUScXC5GPvPZi-ctIcGC8XBFB21P8-WJejG0P0LQLCryYGJpR-J3kx2wkoNihF7_9MrDvzF0lZUIEqZviN4gt5Hcx2F50W95_lfD2w"},
+{n:"Cacau Show",b:"Centro Histórico",r:4.7,e:"Av. Borges de Medeiros, 459",lat:-30.0305129,lng:-51.2279916,id:"ChIJrSCYZw95GZURXRuLBUwMAtY",d:"Fondue de chocolate com morango",p:"AG9NLjDTK60U8FaNzVJxVIgUPg1svcY1t_hieXnkas2-w-v8ppzrFYWHG81DVnsnGIFz19Gb2061VgWn-nFH2kNOzNTfvdgHlpo75yuS1fXzVEiSczdrsTbncna3ZgKf7WxFQqNN7M8Stcm74PKhf3qfnjXI1w"},
+{n:"Coccaderia.Co",b:"Centro Histórico",r:4.3,e:"Praça Dom Feliciano, 106",lat:-30.0295582,lng:-51.2221344,id:"ChIJr5woRVh5GZURZUjVYAqY_M4",d:"Cocadas artesanais de vários sabores",p:"AG9NLjDN2TvUm6NvdDD421glsF-VzafD8_qvbwoZzF4AIhx45mZkdPqRz-iMimCRrVFSJ-oy_lRZcQUVreLP0H4siL3RyYkZKrTVIwnZeevIryPM5A3iFjWypphKh2-EsIm9RWP4lNeGFR3ulbtFfwQ"},
+{n:"Paddock & Co.",b:"Mont'Serrat",r:4.8,e:"R. Pedro Ivo, 205",lat:-30.0297667,lng:-51.1923412,id:"ChIJFz6tVBF5GZURDDlXHf-MBd0",d:"Croissant e cinnamon roll artesanais",p:"AG9NLjBRiMG4bmrfIma-SxyKfVHuGsG3AEUQg-ZZEFtSCnYOCAeUva4BWsnAnhDY5BSjmraCTpodFowTUIpQz4OfQy8a4_JGW3Bk_pNYNocGIRfgCmHESEEl9lD8tCF_worZUxL1EUMs-zpCEBRx4IA"},
+{n:"Padaria Castellani",b:"Humaitá",r:4.5,e:"Av. Clóvis Paim Grivot, 269",lat:-29.9772919,lng:-51.1860946,id:"ChIJWwzPSXl7GZURf92MmK_5JcY",d:"Café da manhã com muita variedade",p:"AG9NLjAyJ_ozZf_p860HcKOfILG1XydxCzwD2DvhFZ1_Vrm9y2W94v_xjkwDkyVLLh74U0i4QXPBlLW97q9hRLcLeMpP3CH93ruk-XehFMtPnj-TXjJNkS6XDyaRMrvVTsyuuxdogITyVN1slrRNXIv-ZTRa7Q"},
+{n:"Empório do Cookie",b:"Floresta",r:4.9,e:"Av. Cristóvão Colombo, 1844",lat:-30.0179548,lng:-51.2026946,id:"ChIJ1wWx1uJ5GZUREMHx5N6LTxo",d:"Cookie de oreo recheado",p:"AG9NLjByikLu4njoxCR5_Z1ZSGwI3IaDvdX-PTlhVUyneo3k2YUkDJ7g1PiaHw6Opnn98All9cdrA2i5mYjVL39lr8aHzYCBGDbT51rJ0mRQHHEqPTJ1OGSvINTPGXz_zBWsMutiDz48UJzOUd0C73JBC3pY"},
+{n:"Quintanilha",b:"Moinhos de Vento",r:4.6,e:"R. 24 de Outubro, 171",lat:-30.0280473,lng:-51.2057043,id:"ChIJ-T1bvfN5GZURRLsu0FTLE0U",d:"Buffet farto e pudim de sobremesa",p:"AG9NLjBq-ydT1d6xp95ogBoTA0ZmJ7Yj1ecRV4wlur65fLmYTcCE3qOm00D0pw9oP3X7E0EFTBQ6N7tFveWp4zYQQrFYbavY_AcVcnRZhLaV9OWUeusGvmS0s5vgA8cmsgNHzpcT-tjmFGAniwaUv7Xou43XXQ"},
+{n:"Limão Bergamota",b:"Ipanema",r:4.8,e:"Av. Arlindo Pasqualini, 135",lat:-30.128206,lng:-51.2385786,id:"ChIJAQCUmbaDGZURWl0tlBYDIf0",d:"Bolo de bergamota e pátio tranquilo",p:"AG9NLjDwQYS4lQ8F3ToebPuJVLv8wZdrw1IeWbv4TVUglZ1jZnuSVlCcicB2qISu9y3AsU2BlWz2SLu0TTjHw_PLrn1sXoEY0xjs9vTtAI05txOQhfiWw8nEaV9bSkBk1EWvhNYO-TgjZVBOw_aALg"},
+{n:"Da Vó Ateliê de Cucas",b:"Bom Fim",r:4.6,e:"R. Garibaldi, 1187",lat:-30.0313194,lng:-51.2154687,id:"ChIJ9eM2ldd5GZUR8nzETWg31Zs",d:"Cuca de uva e pão de aipim",p:"AG9NLjAZCQXWQMpJm_oDChyUkxGnGkrJvKUoF6u_226GDLHSYSRHiPYSyuFXTpJg_32r-GKKujK4d7i42ode74kGP4eIXxdoXul-4d5TXeYB1yN00mnxEFzH-7uig9WiTNPvGQOv2_MLIDb5EcNsoPc"},
+{n:"Café Ibéré",b:"Praia de Belas",r:4.3,e:"Av. Padre Cacique, 2000",lat:-30.0778459,lng:-51.2455261,id:"ChIJA4zqI5l5GZURyv4DXvbj2qI",d:"Pôr do sol no Guaíba e cheesecake",p:"AG9NLjBkcoqdMSyK0zG2OtzDeIyCVguAcGqb4WFJtRo9b-9rJeTsiRh0K1YdAsw4njBftYvfTQF0yJnlZkzbXxjh9VhietRH4wq3OiHLipAZOeDtURLDHVTUH52yB-4mdfNxec4edd5AJPtbbl8fMA"},
+{n:"Uai Why Café",b:"Moinhos de Vento",r:4.9,e:"R. Padre Chagas, 347",lat:-30.0243969,lng:-51.2023207,id:"ChIJo4YYWKZ5GZURklgQKa9pf0s",d:"Pão de queijo recheado e café gelado",p:"AG9NLjBLgyJkMIymz7drmxM7sYd6iFy_j2uUFB0kVNi42toabTZ3Gmu2nppx6x9VP4w4zCplqYuJPgrSYYMqdiaNo8oPXeUUa215g2Od7xMbQujJwGgyTuS1fwqZBPyaKhNZlirJfffucTi05UDInrWgJ1DR"},
+{n:"Café da Catedral",b:"Centro Histórico",r:4.1,e:"R. Dom Sebastião, s/n",lat:-30.0339119,lng:-51.2302673,id:"ChIJ-d8A4gB5GZURUMdGuR_1HeM",d:"Jardim lindo ao lado da Catedral",p:"AG9NLjAvjGjwwwZGNx2gSmLFKDsOUDESpsm594fko-WT2f2BFZD1-mjiikFOzL7-V127JnqsC136b3KlxuZXmdIdsOCuxVraCpILhzJA5gXyzzKJYnRrBtLKuI2e9NHpcJzAZZj68hWDjuzZUzvhTQ"},
+{n:"Cheirin Bão",b:"Bom Fim",r:4.6,e:"Av. Osvaldo Aranha, 1164",lat:-30.0355591,lng:-51.2109652,id:"ChIJcXtOFut5GZURuO4eMW84qh4",d:"Fartura de Minas: 12 pães de queijo",p:"AG9NLjBtdW40-8WUrc0SP39cnTZ4Kfxv5kNH8hrlWATvHJ3AHjiD0KhpzQcQzrPsoAJ3YbemXRhFRUwldUyOJJrFWO_zmnq5lhUM3CILIByLDG-4Mzy3hIVBcNlaEEtJcyXjJqXnSYdMEMVaCmZY"},
+{n:"Mais1Café",b:"Independência",r:4.9,e:"Av. Independência, 1142",lat:-30.0288126,lng:-51.2094823,id:"ChIJRdl8FG55GZURVjMj9QvTjQI",d:"Wheypuccino e bolo de milho",p:"AG9NLjAvt8F8jwu3-2qBp-ICsZ0SXKSM3zyoEz4p8Fa4GTAPCyOsw527PjZZETrghW-fmMPCM-klx8zZhMNl7IP3dq4PVWwqAnr7Z3JYBPuGu4OP0UE_XF8KgHn3iaBsameKtqf9hEx0hpOnED6wUIx88Znh5A"},
+{n:"Café do Mercado",b:"Centro Histórico",r:4.6,e:"Mercado Público, lojas 71 e 73",lat:-30.0274769,lng:-51.2282705,id:"ChIJZfysYVp5GZURLCnQymuNVHo",d:"Flat white e doce de Pelotas",p:"AG9NLjDT1_ngQjzVtvcoyKi6x0mCXR5ix_2I2EnL_Au5KSwuH7Jb_8NTAwcvRIsLCP4_JaMkVWfykyMJjJMp9t7pJo-VKFMSbex4MawcHWdxlIloEzNJ0W7t7QAnIinLtm36LCx-xnmX2unjzZSKGiw"},
+{n:"A Casa Brasileira",b:"Rio Branco",r:4.9,e:"R. Miguel Tostes, 457",lat:-30.0322155,lng:-51.2058575,id:"ChIJF05eqDp5GZUR2M5EGqCyQoc",d:"Torta de butiá e bolo cremoso",p:"AG9NLjAG_as8z_uFvZbBXNrpT4NPj26NUn3rceE0bSMVDkgoN_S1_e_blUdjl2DaF3aCzbtdllRQNjEmGLxVjQQ7bJHDot8txFPdiZNJZztIrEF6hde8C3oYqtNt50942G7VbO-Cl9bW0vTgtF7BRI2x36s2"},
+{n:"Royal Trudel",b:"São João",r:4.3,e:"Aeroporto Salgado Filho",lat:-29.9901588,lng:-51.1761573,id:"ChIJnyDd7G13GZURTwg5zuHW1-o",d:"Trudel romeno com nutella",p:"AG9NLjCgpe-tf1GkDuL2xkgC3ESt5XGNSWKaItEYWCzyuLv4qyLMMJEV8aCw9PoWJrgh6JiZqNDlOGhOhG6AZt6Pe1Q7W78_hCDb63n-hPJXS0a-endGLBeYOM7RNjMpMrkP5PLuTyH-SJ3plH7r8w"},
+{n:"Chocolate Lugano",b:"Passo d'Areia",r:4.9,e:"Iguatemi — Av. João Wallig, 1800",lat:-30.0251268,lng:-51.1623898,id:"ChIJ6zb1bTN3GZURHWlzf_8pNTM",d:"Brownie com mocaccino",p:"AG9NLjCHgtA_LfKIHKQte2YIuamneuxW8tD5Q36OpSOqC33l1opdYu5o7aHLWasiN02jXX8bGN8DrE2Zb4cpA7EVEeNexKqGm6jcPt0aFcLMg6LBVUtIc1L2P58ZNKUrziGyoJuLV6bk2HNFzHvK6zwQ4JkLjA"},
+{n:"Sem Culpa Doceria",b:"Bom Fim",r:4.5,e:"R. Irmão José Otão, 588",lat:-30.0315327,lng:-51.2126039,id:"ChIJKT7vCAB5GZUReoTeIQ5SGsA",d:"Tudo sem açúcar, glúten e lactose",p:"AG9NLjAlTTp2gCTWSXqB5NlalLYzF9AYU9ObslBAMmkwu6YUGZuyB1yyDZjMj2r9TMRyK2t_52mC2c8U6pRgZlxGkFGGlnrEAt2vBXgfRJOs0rHzISxFgz5gnMxvut_5JjOaewju2ViPgBMqyMa5A1cT3kOQpw"},
+{n:"Ursa",b:"Bom Fim",r:4.9,e:"R. Santo Antônio, 921",lat:-30.0333627,lng:-51.2145747,id:"ChIJrTbFZyx5GZURaDSCt40E9NY",d:"Cinnamon roll e bolo de milho",p:"AG9NLjDlMg9j-JCgSjOA4Aq1EIcVCkV1Qbyuyk9m2lZev2GLjh7esXEZoC9wIjQriRmViu6roKCVapAMkRJzYoV-gdXPW3frLmTiZ-bSJPofXL_mmGBNlnshZ_2VdVc796qAwoj1kLPYM99yLrp3XkcpiqIsaw"},
+{n:"Gatinhos Café",b:"Rio Branco",r:4.7,e:"R. Domingos J. de Almeida, 87",lat:-30.0385458,lng:-51.1990498,id:"ChIJ5ZLK3r55GZURkYOYvwRtEdc",d:"Cat café — sala dos gatos e frappé",p:"AG9NLjBUuN6Nfq1wAza9Z3iow0hX49ASNeuScPHxZbsfabNjZ9Y18i1KNopUaxpgy3gsdv7Qh2JpDfm1bluz2FUCuMxQtT2T_GDC0zgZBHGqG15kNj65s9qCX2fxNv7S6SEQyTnqmdOA072uCmHTzOqzrYO-Ug"},
+{n:"Confeitaria Princesa",b:"Centro Histórico",r:4.3,e:"R. dos Andradas, 1812",lat:-30.0296112,lng:-51.2234622,id:"ChIJN2u_1wd5GZUR-lqPI1q4sE0",d:"Cachorro-quente e mil folhas clássicos",p:"AG9NLjByBNhqqKt2Vl08Un8WAdlO3zQEz6rYt2dgEp3CwQvclKDw7ucDaGK3bqLmT6a9oHGZUzCG_r6nxj52qnc0xwk4Zb0PIz1NRU_KqRj-HRoL7PAGR3U4RyZdPWYVIFKStB-Qf_b6d178RaDx"},
+{n:"Z Café",b:"Bela Vista",r:4.3,e:"Av. Nilópolis, 543",lat:-30.0366841,lng:-51.1864896,id:"ChIJT8aVGEZ2GZURmE4dVpYu_-w",d:"Torta Z e torta integral de banana",p:"AG9NLjAch8SfSiVJ-W25VCoXmkwaIrRkDRYRlD2IwaxbHb_vpF5Hy3S7SVhiFmYKczl5HLCQQsjxQnAuGjkQOvjZZcZq2qZWc0mXa4JTNUWSKloz-xhTm-KJ_tHWMwJw_IHhdn-jK8KMj5yhfMT7xQM"},
+{n:"Johnny & Julie",b:"Auxiliadora",r:4.5,e:"R. 24 de Outubro, 1681",lat:-30.0218901,lng:-51.1920186,id:"ChIJIQ-yXM55GZURieNjrkfN2u4",d:"Cheesecake e combo johnny",p:"AG9NLjARobhGJmLayPfV3_TNXasUXLbAIC2C-Vob9vAgxzIs5Em4pe5M2P9MahjZWWvpwuJST4p0Mkhgs1Wty6RL8oyN786vZ2sI0kmEnG6RzK2g1xPaBj0s9JbXDxsN3jkHP9AUVqjjZhLiQTL0hg"},
+{n:"Mima Focacceria",b:"Bom Fim",r:4.4,e:"R. Ramiro Barcelos, 1199",lat:-30.029403,lng:-51.2086476,id:"ChIJvSf-OwB5GZUR6txaGeOeUNM",d:"Focaccia Toscana bem recheada",p:"AG9NLjCTx8gmrTe8Xoy3kvIE47oi43Wps8l3p8p0jiB2fVSNTBdyXYbh6j_hPEH86uSSDYWe-slE2MC1jhMTRu37cNeuAfK9r3g6m1YPDCNkc8rlv6Mf7w0FKog45J-jqTYgC91mDXUpu_8LUXjuQqD-23jT"},
+{n:"Café Imperador",b:"São Geraldo",r:4.7,e:"R. Félix da Cunha, 91",lat:-30.0137469,lng:-51.2035288,id:"ChIJE2RpN_d5GZUR5UxjCJrTXrw",d:"Casarão de 1914 e chocolate quente",p:"AG9NLjDwwkxP2p7w-ZsPIYnyIST5dE_Pizbv3svY6bQiIPi4kcA_xydxmZ2lSPcWY3cSkcHMfxppXM8_jjtHNKRXW23SCl6-f_XXZV0wSOZOduespvJkMK1tKAvhX9DPGagd6YbF8Zguva78ouALrXOS6yeKgg"},
+{n:"Vírgula Bistrô e Café",b:"Moinhos de Vento",r:4.8,e:"R. Dr. Florêncio Ygartua, 200",lat:-30.028344,lng:-51.2029387,id:"ChIJqYfprlp5GZUR8oVbwPGY-QI",d:"Só almoço — bistrô pequeno e charmoso",p:"AG9NLjAi7iBXGzOfF_zbUZ8-jG74EDXfFhCUg1UL_ZlQTnP06Go4MzKpecJYRsbj_IKi0oXgN0XuVgXJOicdWoyTPv1zgmuiVINk9QtIos5pb5EIiS6Q9CryjeMiRu3hbBNH3NwXlXRVmMhnOpK8xA"},
+{n:"Shakespeare Casa de Chá",b:"Moinhos de Vento",r:4.1,e:"R. Dinarte Ribeiro, 128",lat:-30.0233216,lng:-51.2030356,id:"ChIJ7z5QbG15GZUR_L0jXBKAwZA",d:"Chá da tarde, cannoli e pavlova",p:"AG9NLjB_OeHSkN3V8oFtC_e8Cqr-zZaO98E0qhFpQPBKTVAjomWhzFJygSfEqABIHwcIZB8JxO357cfDg0bQKbh3PH_6Ast3-WXakEpmVm3qMdC7wC3qpY-cG-LQVgyfi7YNKqrMdbJm5uQgELRXwA"},
+{n:"Mimô do Zé",b:"Jardim Botânico",r:4.9,e:"R. Felizardo, 750",lat:-30.0509381,lng:-51.1825377,id:"ChIJeT_1ouF5GZURDK0izNyfskY",d:"Brownie, cheesecake e empanadas",p:"AG9NLjAO87PymmxT6mcXrupWAMDAKN3Jni-1DimdlCIdi4wLQ4XavOFC9feewixtzNR702vwo6R-lQH-oXF2uqofUsIh9-xlJ4mnszB9gzAFo9Fx03dz9L2m5K3YLcVpdI_I474QkAbe-yP3Reiio8FARQs_jQ"},
+{n:"Griffe Patisserie",b:"Passo d'Areia",r:4.3,e:"R. Jari, 692",lat:-30.0172147,lng:-51.1666774,id:"ChIJdbH3qHd3GZURtbsWQG4dRR0",d:"Entremets e sanduíche farroupilha",p:"AG9NLjADgiktWs-Psv-_Z3ZAZ3FFaVS9UrbaxUjAGR2GOJCs6a4X0HaDTXaUsz6C2MTGCphHIQDXTEDFDVkD7viyZ6uz-jbyjyfWv3Qb2Av5DgIjNy1fk7mVFayJ7VWsjV4umzCnRSwSY4KJtTqK0E0"},
+{n:"Café Angélica",b:"Bom Fim",r:4.7,e:"R. Gen. João Telles, 301",lat:-30.0321397,lng:-51.2125721,id:"ChIJ28qQBvV5GZURPusuXLc6YDY",d:"Vegetariano, cheesecake e tortas salgadas",p:"AG9NLjBte0z8a3LOIAysN7cs98dXW3_7uzBhNM3FzDg3mL0P9RnilcA9KlKqjUPz7mhNSyJRofLb5SWI7tTgkpKTXEmhRfFkgBlWXXRCv7HHjkUyv5qsHpuI-dF-tIgUnsfktmD3f2h4eLxTWkuiJA"},
+{n:"Verissimo Café Bistrô",b:"Moinhos de Vento",r:4.3,e:"R. 24 de Outubro, 111",lat:-30.0282883,lng:-51.2064563,id:"ChIJySoGiEd5GZURL9a9ole-oJQ",d:"Sanduíche de pastrami defumado",p:"AG9NLjCcE3hbTqF0ZvX0a14RY3TUUDzZ-J8fzn5ZmRqGV5XT6d3pXCZC9ojQv2-0Uo8pqoQC_3cA8f3gDIzUyiQ9PDraLNxkujhyJqjD_xCJM-GAPz-8ZE30xdOQ-P5VDxj2AWSgpfNdiBx5f7eXRtX8Pedn"},
+{n:"Doce Docê Café",b:"São Sebastião",r:5.0,e:"Boulevard — Av. Assis Brasil, 4320",lat:-30.0088294,lng:-51.1436741,id:"ChIJ9wVfxYZ3GZURaxy9NDJefzc",d:"Gelato de bergamota e palha italiana",p:"AG9NLjD2nUsZO4HWdB-VluStm6KX0hHjBFNzmKO99_fDsikBWZkdFYW3EacmVjrhAL2XOmhvS5370H3Ec7zrfv8wcOUB48iLTuv7rMcfYYrfAlpSSe9Mbu5VX0lO4rTYtFaDm73B7M2Gt4FK963_5izOu5xgDQ"},
+{n:"Hani Coffee",b:"Independência",r:4.5,e:"Av. Independência, 1211",lat:-30.0292453,lng:-51.2088123,id:"ChIJqfUaTAB5GZURwa9dB1x0HlM",d:"Matcha latte e banana milk artesanal",p:"AG9NLjA_t28ZiwblVchjkpQMR7KdHopoASJ21vnDBMboqOzoWP_gkJKB6BUg5zpgI4402eOLsxU7QxuLLI5bGVWi5aeIuphLSNp0xKUruWVFnnnStLJUIQdqmwvYbSg6J-Rwqmte-1h5P4DOQQyftHTa8dBGsQ"},
+{n:"Confeitaria Dona Inês",b:"Sarandi",r:4.7,e:"Av. Sertório, 9001",lat:-30.0007637,lng:-51.1312053,id:"ChIJTcq4LBp3GZURZEotydUixxY",d:"Kits de café da tarde tradicionais",p:"AG9NLjDj9UC28BLjNgaCqQWUwuzoTEXAlFK71xHfEHI41-6KxsMd3TTlxKpwB7s5Tf9wBPqHMXULaWqd6YOdqd0KavSto9tYoamZUE21CaiE8KBTPc_OkY_QiZYAh5RK2poqp-Zeg8k72wxgPnr66g"},
+{n:"Pradié Bakery",b:"Centro Histórico",r:4.6,e:"Mercado Público, loja 99",lat:-30.028007,lng:-51.228109,id:"ChIJ6WmAJNJ1XKER0zujzBuv5JU",d:"Cookie quente com sorvete",p:"AG9NLjB4oNacJqNPhMcyr_y9-QbZ9uW0e6cFCXJZ1GQW6fMW1Oe7vI5HMLGz8Za5BcezJTZlEhnqtX-MAGtbkqJ6Hl7gWKCJpsCrA7Hj5ZageKz4InlQ85-1YBx9kM3liRNZbmg0pO7NmtdfEPWr"},
+{n:"Tortas Doquinha",b:"Vila Jardim",r:4.6,e:"Av. Teixeira Mendes, 533",lat:-30.0354266,lng:-51.1648877,id:"ChIJKUvFw_p3GZUR6Yo-OLIrSrg",d:"Fatias generosas — fondue de morango",p:"AG9NLjCy0lGVth6ohBduAi7Gl-yv02lCt7_SCCOPG30BNloYHHwz1rRCeV1sLuq85i_pdonD6FIAS4mgORhovnS4RN5rCLZCWVyaHg7We6NW8zfCAeAwBXvi1vfofrtIgfUONo1PE0F2EF_UUotXB7nH57wytg"},
+{n:"Berdin Cookies",b:"Vila Ipiranga",r:4.9,e:"Praça Alfred Sehbe, 135",lat:-30.019403,lng:-51.153873,id:"ChIJAaByabN3GZURMbKJE2Tu7hw",d:"Cookie de cheesecake, sabor novo todo mês",p:"AG9NLjCLsl9Q_JbtxRrLPocFfLOTvQDNtTitQcBAh2478LSeLH5dsu2FyYi_rDUWDmi0iJ84oWqSmEM9U3qVa7S4MqqE3K0uBuXx0T8fT-g9WuOGZU_z2s7HdFHgMpooJk4_5_wGeI-qHtILG5_20OPUdph5Yg"},
+{n:"Padaria Piratini",b:"Sarandi",r:4.6,e:"Av. Assis Brasil, 6415",lat:-29.9949065,lng:-51.1296764,id:"ChIJkZeA_eR2GZURr4VfcmI8Pk8",d:"Croissant de goiabada e suco de laranja",p:"AG9NLjDuFgVNIBNBxH06lpFQikayRmMegwvGTKWOZoMvcttVqhPQqElJ_yG-jVRTZkaMiElb97xGhnT0Y3fnpqUk5vyq9vBEcGAoqa1GyF4gkvOBaDaosPh8BsnivTKiC_Tu8aBxuPeX4dJceXBwtg"},
+];
+
+</script>
+<script>
+/* aviso: arquivo aberto localmente bloqueia as fotos */
+let _ff=0, _ffAvisado=false;
+window.fotoFalhou=()=>{
+  if(++_ff<3 || _ffAvisado) return;
+  _ffAvisado=true;
+  const local = !location.protocol.startsWith("http");
+  toast(local ? "Publique o arquivo e abra pelo link — assim as fotos carregam"
+              : "As fotos não responderam agora");
+};
+
+/* ============ estado ============ */
+const KEY="rota-cafe-poa-v1";
+let done = new Set(JSON.parse(localStorage.getItem(KEY)||"[]"));
+const save = ()=>localStorage.setItem(KEY,JSON.stringify([...done]));
+const img = c => IMG_BASE + c.p + IMG_SUF;
+
+const ICONS=["☕","🥐","🍰","🍪","🥯","🧁","🍮","🫖"];
+const hoodIcon = h => ICONS[[...h].reduce((a,ch)=>a+ch.charCodeAt(0),0)%ICONS.length];
+
+const BAIRROS = [...new Set(CAFES.map(c=>c.b))]
+  .sort((a,b)=>a.localeCompare(b,'pt-BR'));
+
+let state={screen:"home",hood:null,filter:"todas",q:""};
+const $ = s=>document.querySelector(s);
+const view=$("#view");
+
+/* ============ progresso ============ */
+function refreshMeter(){
+  const t=CAFES.length, d=done.size, p=Math.round(d/t*100);
+  $("#pct").textContent=p+"%"; $("#cnt").textContent=d+"/"+t; $("#bar").style.width=p+"%";
+  const hd=BAIRROS.filter(b=>CAFES.filter(c=>c.b===b).every(c=>done.has(c.id))).length;
+  $("#hoodsdone").textContent = hd?`${hd} bairro${hd>1?"s":""} completo${hd>1?"s":""}`:"";
+  $("#miniN").textContent=d+"/"+t; $("#miniB").style.width=p+"%";
+  $("#msg").textContent =
+    d===0?"Bora começar? ☕" : d===t?"Rota completa! 🏆" :
+    p<25?"Aquecendo a xícara…" : p<50?"Tá pegando o ritmo!" :
+    p<75?"Mais da metade, isso!" : "Falta pouco pro final!";
+}
+
+/* ============ telas ============ */
+function screenHome(){
+  const q=state.q.toLowerCase().trim();
+  if(q){ return screenBusca(q); }
+  const cards = BAIRROS.map(b=>{
+    const list=CAFES.filter(c=>c.b===b), d=list.filter(c=>done.has(c.id)).length;
+    const full = d===list.length;
+    return `<button class="hood ${full?'done':''}" data-hood="${esc(b)}">
+      <span class="ic">${full?"✓":hoodIcon(b)}</span>
+      <span class="nm"><b>${esc(b)}</b><span>${d} de ${list.length} visitada${list.length>1?'s':''}</span></span>
+      <span class="dots">${list.map(c=>`<i class="${done.has(c.id)?'on':''}"></i>`).join("")}</span>
+    </button>`;
+  }).join("");
+  return `${searchBar()}
+    <div class="sechead"><h2>Escolha um bairro</h2><span class="ln"></span></div>
+    ${cards}`;
+}
+
+function screenBusca(q){
+  const hits=CAFES.filter(c=>(c.n+" "+c.b+" "+c.d).toLowerCase().includes(q));
+  return `${searchBar()}
+    <div class="sechead"><h2>${hits.length} resultado${hits.length!==1?'s':''}</h2><span class="ln"></span></div>
+    ${hits.length?hits.map(cardHTML).join(""):emptyHTML("Nada com esse nome por aqui.")}`;
+}
+
+function screenHood(){
+  const list=CAFES.filter(c=>c.b===state.hood).sort((a,b)=>b.r-a.r);
+  const d=list.filter(c=>done.has(c.id)).length;
+  const f=state.filter;
+  const shown=list.filter(c=> f==="todas"||(f==="faltam"?!done.has(c.id):done.has(c.id)));
+  return `<button class="back" id="back">← Todos os bairros</button>
+    <div class="hoodhead">
+      <h2>${esc(state.hood)}</h2>
+      <p>${d} de ${list.length} já visitada${list.length>1?'s':''} ${d===list.length?"— bairro completo 🎉":""}</p>
+    </div>
+    <div class="tabs">
+      ${["todas","faltam","visitadas"].map(t=>
+        `<button class="tab" data-f="${t}" aria-pressed="${f===t}">${t[0].toUpperCase()+t.slice(1)}</button>`).join("")}
+    </div>
+    ${shown.length?shown.map(cardHTML).join(""):emptyHTML(f==="faltam"?"Tudo visitado nesse bairro! 🎉":"Nenhuma marcada ainda.")}`;
+}
+
+function cardHTML(c){
+  const on=done.has(c.id);
+  const maps=`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.n+" "+c.e+" Porto Alegre")}&query_place_id=${c.id}`;
+  return `<article class="card ${on?'done':''}" data-id="${c.id}">
+    <div class="ph">
+      <div class="fallback">${hoodIcon(c.n)}</div>
+      <img src="${img(c)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none';window.fotoFalhou&&window.fotoFalhou()">
+      <span class="badge">★ ${c.r.toFixed(1)}</span>
+      <svg class="stamp" viewBox="0 0 120 120" aria-hidden="true">
+        <circle cx="60" cy="60" r="52" fill="none" stroke="#2E6B5E" stroke-width="5" stroke-dasharray="10 6"/>
+        <circle cx="60" cy="60" r="42" fill="rgba(255,255,255,.86)" stroke="#2E6B5E" stroke-width="3"/>
+        <path d="M42 56l13 14 26-29" fill="none" stroke="#2E6B5E" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="60" y="92" text-anchor="middle" font-family="Bricolage Grotesque,sans-serif"
+          font-size="13" font-weight="800" fill="#2E6B5E">VISITADO</text>
+      </svg>
+    </div>
+    <div class="bd">
+      <h3>${esc(c.n)}</h3>
+      <p class="sub">${esc(c.e)} · ${esc(c.b)}</p>
+      <p class="tip">${esc(c.d)}</p>
+      <div class="acts">
+        <button class="btn main" data-check="${c.id}">${on?"✓ Visitado":"Marcar visita"}</button>
+        <a class="btn" href="${maps}" target="_blank" rel="noopener">📍 Como chegar</a>
+      </div>
+    </div>
+  </article>`;
+}
+
+const emptyHTML = t=>`<div class="empty"><div>☕</div>${t}</div>`;
+const searchBar = ()=>`<div class="search">
+  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#241813" stroke-width="2.4">
+    <circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6" stroke-linecap="round"/></svg>
+  <input id="q" type="search" placeholder="Buscar cafeteria ou bairro…" value="${esc(state.q)}">
+</div>`;
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+
+/* ============ render ============ */
+function render(keepFocus){
+  view.innerHTML = state.screen==="home"?screenHome():screenHood();
+  refreshMeter();
+  const q=$("#q");
+  if(q&&keepFocus){q.focus();q.setSelectionRange(q.value.length,q.value.length);}
+  window.scrollTo({top:state.screen==="hood"?0:window.scrollY,behavior:"instant"});
+}
+
+/* ============ eventos ============ */
+document.addEventListener("click",e=>{
+  const hood=e.target.closest("[data-hood]");
+  if(hood){ state.hood=hood.dataset.hood; state.screen="hood"; state.filter="todas"; state.q="";
+            render(); window.scrollTo({top:0,behavior:"smooth"}); return; }
+  if(e.target.closest("#back")){ state.screen="home"; render(); return; }
+  const tab=e.target.closest("[data-f]");
+  if(tab){ state.filter=tab.dataset.f; render(); return; }
+  const chk=e.target.closest("[data-check]");
+  if(chk){
+    const id=chk.dataset.check, card=chk.closest(".card");
+    if(done.has(id)){ done.delete(id); card.classList.remove("done","pop"); chk.textContent="Marcar visita"; }
+    else{ done.add(id); card.classList.add("done"); card.classList.remove("pop");
+          void card.offsetWidth; card.classList.add("pop"); chk.textContent="✓ Visitado";
+          navigator.vibrate&&navigator.vibrate(18);
+          const c=CAFES.find(x=>x.id===id); celebrate(c); }
+    save(); refreshMeter();
+    if(state.screen==="hood"&&state.filter!=="todas") setTimeout(()=>render(),700);
+    else if(state.screen==="hood") updateHoodHead();
+  }
+});
+function updateHoodHead(){
+  const list=CAFES.filter(c=>c.b===state.hood), d=list.filter(c=>done.has(c.id)).length;
+  const p=view.querySelector(".hoodhead p");
+  if(p) p.textContent=`${d} de ${list.length} já visitada${list.length>1?'s':''} ${d===list.length?"— bairro completo 🎉":""}`;
+}
+document.addEventListener("input",e=>{
+  if(e.target.id==="q"){ state.q=e.target.value; render(true); }
+});
+
+/* ============ celebrações ============ */
+let tTimer;
+function toast(t){ const el=$("#toast"); el.textContent=t; el.classList.add("on");
+  clearTimeout(tTimer); tTimer=setTimeout(()=>el.classList.remove("on"),2600); }
+function celebrate(c){
+  const list=CAFES.filter(x=>x.b===c.b);
+  if(list.every(x=>done.has(x.id))) toast(`🎉 ${c.b} completo!`);
+  else if(done.size===CAFES.length) toast("🏆 Rota do Café concluída!");
+  else if(done.size%10===0) toast(`☕ ${done.size} cafeterias já!`);
+}
+
+/* ============ export / import ============ */
+$("#btnExp").onclick=async()=>{
+  const code=btoa(JSON.stringify([...done]));
+  try{ await navigator.clipboard.writeText(code); toast("Código copiado — manda pra ela!"); }
+  catch{ prompt("Copie seu código de progresso:",code); }
+};
+$("#btnImp").onclick=()=>{
+  const v=prompt("Cole aqui o código de progresso:");
+  if(!v)return;
+  try{ const arr=JSON.parse(atob(v.trim()));
+       if(!Array.isArray(arr)) throw 0;
+       arr.forEach(id=>{ if(CAFES.some(c=>c.id===id)) done.add(id); });
+       save(); render(); toast("Progressos juntados! ☕"); }
+  catch{ toast("Código inválido 😕"); }
+};
+$("#btnReset").onclick=()=>{
+  if(confirm("Zerar todas as marcações? Isso não dá pra desfazer.")){
+    done=new Set(); save(); render(); toast("Rota zerada.");
+  }
+};
+
+/* barra fixa + sorteio */
+addEventListener("scroll",()=>{ $("#mini").classList.toggle("on", scrollY>210); },{passive:true});
+$("#btnLuck").onclick=()=>{
+  const falta=CAFES.filter(c=>!done.has(c.id));
+  if(!falta.length){ toast("Vocês já foram em todas! 🏆"); return; }
+  const c=falta[Math.floor(Math.random()*falta.length)];
+  state.screen="hood"; state.hood=c.b; state.filter="todas"; state.q=""; render();
+  toast(`Que tal ${c.n}? (${c.b})`);
+  setTimeout(()=>{
+    const el=view.querySelector(`.card[data-id="${c.id}"]`);
+    if(el){ el.scrollIntoView({behavior:"smooth",block:"center"});
+            el.animate([{outline:"0 solid transparent"},{outline:"4px solid #E8A33D"},
+                        {outline:"0 solid transparent"}],{duration:1500}); }
+  },260);
+};
+
+try{ render(); }
+catch(err){
+  view.innerHTML='<div class="empty"><div>⚠️</div>Algo falhou ao carregar: '+err.message+'</div>';
+  console.error(err);
+}
+</script>
+</body>
+</html>
